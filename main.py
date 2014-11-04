@@ -1,11 +1,3 @@
-# Update in a args.yaml file --sitting in the same folder as the main.py-- the key, groupURLName, rotations, username and password of gmail account with your API meetup.com key,
-# the URL name of your meetup group, times the script checks on the events before it ends, and your gmail account information, respectively.
-
-# Also, update the seconds. This is the interval by which the script is scheduled to run. The seconds also define how far back the
-# script looks to see if the pulled events were updated recently.
-
-# The seconds must be a strictly positive integer!
-
 import requests
 import json
 from datetime import datetime as d
@@ -25,6 +17,8 @@ groupURLName = arguments['groupURLName']
 rotations = arguments['rotations']
 username = arguments['username']
 password = arguments['password']
+fromaddr = arguments['fromaddr']
+toaddrs = arguments['toaddrs']
 
 def meetupNotify():
 	url = 'https://api.meetup.com/2/events?&key=' + key + '&sign=true&photo-host=public&group_urlname=' + groupURLName 
@@ -77,9 +71,6 @@ def meetupNotify():
 		time = (d.utcfromtimestamp(int(event['time']))).strftime('%I:%M%p')
 		string = "The " + event['nameOfGroup'] + " meetup has organized \"" + event['nameOfEvent'] + "\" to happen on " + date + " at " + (time) + ". Register at: " + event['event_url']
 		msg = msg + string + '\n\n'
-
-	fromaddr = 'frenchfriedamerican@gmail.com'
-	toaddrs = 'cyndie.cottrell@gmail.com'
 
 	server = smtplib.SMTP("smtp.gmail.com:587")
 	server.starttls()
