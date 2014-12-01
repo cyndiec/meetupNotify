@@ -1,6 +1,8 @@
 meetupNotify
 ============
 
+DISCLAIMER: There is a reported bug with this program preventing it from working as expected, I am working on fixing it.
+
 Using the meetup.com API to be notified when an event is posted.
 
 REQUIREMENTS:

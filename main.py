@@ -8,6 +8,8 @@ import time
 import sched
 import yaml
 
+debug = True
+
 stream = open('./args.yaml', 'r')
 arguments = yaml.load(stream)
 
@@ -33,6 +35,8 @@ def meetupNotify():
 		return "Exit of function."
 
 	jobject = json.loads(response.text.encode(response.encoding))
+	if debug:
+		print jobject
 	eventsCount = jobject['meta']['count']
 
 	if eventsCount == 0:
@@ -72,12 +76,16 @@ def meetupNotify():
 		string = "The " + event['nameOfGroup'] + " meetup has organized \"" + event['nameOfEvent'] + "\" to happen on " + date + " at " + (time) + ". Register at: " + event['event_url']
 		msg = msg + string + '\n\n'
 
+	# try:
 	server = smtplib.SMTP("smtp.gmail.com:587")
 	server.starttls()
 	server.login(username,password)
 	server.sendmail(fromaddr, toaddrs, msg)
 	server.quit()
-
+	# except SMTPAuthenticationError:
+	# 	print "There was an authentication error with your email. This is the email we tried to send you:"
+	# 	print msg
+	# 	return "Exit of function."
 
 def scheduler_meetupNotify():
 
@@ -88,6 +96,6 @@ def scheduler_meetupNotify():
 scheduler = sched.scheduler(time.time, time.sleep)
 
 for i in range(rotations):
-	print "Scheduler ran %i times." % i
+	print "Scheduler ran %i time(s)." % i
 	scheduler_meetupNotify()
 
